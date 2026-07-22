@@ -1,4 +1,4 @@
-# 🏦 ExplainAI LoanWise
+# 🏦 BHARAT LOAN SAHAYAK
 
 > **AI-Powered Banking Loan Eligibility Explanation Assistant**
 
@@ -13,7 +13,7 @@
 
 ## 📖 Overview
 
-ExplainAI LoanWise is an AI-powered Banking Loan Eligibility Explanation Assistant designed to make loan decisions **transparent, explainable, and user-friendly**.
+BHARAT LOAN SAHAYAK is an AI-powered Banking Loan Eligibility Explanation Assistant designed to make loan decisions **transparent, explainable, and user-friendly**.
 
 Unlike traditional systems that simply display **Approved** or **Rejected**, our platform explains *why* a decision was made and provides personalized recommendations to improve loan eligibility.
 
