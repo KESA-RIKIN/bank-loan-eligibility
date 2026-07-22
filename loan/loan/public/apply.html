@@ -1,0 +1,623 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Loan Application | ExplainAI LoanWise</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;700&family=Montserrat:wght@400;500;700&family=Anybody:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+    if (!localStorage.getItem('isLoggedIn')) { window.location.href = '/login.html'; }
+    document.addEventListener('DOMContentLoaded', () => {
+        const aside = document.querySelector('aside');
+        if (aside) {
+            const logoutBtn = document.createElement('button');
+            logoutBtn.className = 'mt-4 w-full py-3 bg-red-50 text-red-600 rounded-xl font-label-sm flex items-center justify-center gap-2 hover:bg-red-100 transition-all';
+            logoutBtn.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
+            logoutBtn.onclick = () => { localStorage.removeItem('isLoggedIn'); window.location.href = '/login.html'; };
+            aside.appendChild(logoutBtn);
+        }
+    });
+</script>
+<style>
+    /* ── Glassmorphism ── */
+    .glass-card {
+        background: rgba(255,255,255,0.55);
+        backdrop-filter: blur(24px) saturate(1.8);
+        -webkit-backdrop-filter: blur(24px) saturate(1.8);
+        border: 1px solid rgba(255,255,255,0.35);
+        box-shadow: 0 8px 40px -8px rgba(53,37,205,0.10), 0 0 0 1px rgba(53,37,205,0.04);
+        position: relative;
+    }
+    .glass-card::before {
+        content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
+        background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, transparent 50%);
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+    }
+
+    /* ── Input Focus Glow ── */
+    .input-focus-glow {
+        transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    }
+    .input-focus-glow:focus {
+        outline: none;
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 4px rgba(79,70,229,0.12), 0 0 20px -4px rgba(79,70,229,0.15);
+        transform: translateY(-1px);
+    }
+
+    /* ── Animations ── */
+    @keyframes slideUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes scaleIn { from { opacity:0; transform:scale(0.9); } to { opacity:1; transform:scale(1); } }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    @keyframes pulseRing {
+        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(79,70,229,0.5); }
+        70% { transform: scale(1); box-shadow: 0 0 0 14px rgba(79,70,229,0); }
+        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(79,70,229,0); }
+    }
+    @keyframes iconSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes brainPulse {
+        0%,100% { transform: scale(1); filter: brightness(1); }
+        50% { transform: scale(1.08); filter: brightness(1.15); }
+    }
+    @keyframes stepSlide { from { opacity:0; transform:translateX(-16px); } to { opacity:1; transform:translateX(0); } }
+    @keyframes progressGrow { from { width: 0%; } }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+    @keyframes checkDraw { from { stroke-dashoffset: 24; } to { stroke-dashoffset: 0; } }
+    @keyframes dotPulse { 0%,100% { opacity:0.4; } 50% { opacity:1; } }
+
+    .pulse-effect { animation: pulseRing 2.5s cubic-bezier(0.4,0,0.6,1) infinite; }
+
+    .animate-entry { animation: slideUp 0.7s cubic-bezier(0.22,1,0.36,1) forwards; opacity: 0; }
+    .stagger-1 { animation-delay: 0.1s; } .stagger-2 { animation-delay: 0.2s; }
+    .stagger-3 { animation-delay: 0.3s; } .stagger-4 { animation-delay: 0.4s; }
+
+    /* ── Button Ripple ── */
+    .btn-ripple { position: relative; overflow: hidden; }
+    .btn-ripple::after {
+        content: ''; position: absolute; inset: 0;
+        background: radial-gradient(circle, rgba(255,255,255,0.35) 10%, transparent 60%);
+        transform: scale(0); opacity: 0; transition: transform 0.5s, opacity 0.5s;
+    }
+    .btn-ripple:active::after { transform: scale(2.5); opacity: 1; transition: transform 0s, opacity 0s; }
+
+    /* ── Hover Effects ── */
+    .hover-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 8px 24px -4px rgba(53,37,205,0.12); }
+
+    .hover-icon:hover .material-symbols-outlined { transform: rotate(6deg) scale(1.05); }
+    .material-symbols-outlined { transition: transform 0.3s ease; }
+
+    /* ── Form Section Reveal ── */
+    .form-section { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .form-section.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Cinematic Overlay ── */
+    .cinematic-overlay {
+        position: fixed; inset: 0; z-index: 200;
+        background: rgba(250,248,255,0.92);
+        backdrop-filter: blur(32px) saturate(1.5);
+        -webkit-backdrop-filter: blur(32px) saturate(1.5);
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; pointer-events: none;
+        transition: opacity 0.5s ease;
+    }
+    .cinematic-overlay.active { opacity: 1; pointer-events: all; }
+
+    .journey-step-item { opacity: 0; transform: translateX(-12px); transition: all 0.5s ease; }
+    .journey-step-item.active { opacity: 1; transform: translateX(0); }
+    .journey-step-item.completed .step-icon { background: #10b981 !important; border-color: #10b981 !important; }
+    .journey-step-item .step-progress { width: 0; transition: width 0.8s ease; }
+    .journey-step-item.active .step-progress { width: 100%; }
+
+    .typing-dot { animation: dotPulse 1.5s infinite; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: #c7c4d8; border-radius: 10px; }
+</style>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"surface-container-low": "#f2f3ff", "outline-variant": "#c7c4d8", "primary-fixed": "#e2dfff", "error-container": "#ffdad6", "surface-container-lowest": "#ffffff", "secondary-container": "#2170e4", "inverse-surface": "#283044", background: "#faf8ff", "on-tertiary-container": "#ffd2be", "surface-container-high": "#e2e7ff", "on-secondary-fixed-variant": "#004395", "primary-fixed-dim": "#c3c0ff", "tertiary-fixed-dim": "#ffb695", "secondary-fixed-dim": "#adc6ff", primary: "#3525cd", "on-secondary": "#ffffff", "surface-variant": "#dae2fd", "on-primary-fixed-variant": "#3323cc", "on-surface-variant": "#464555", "on-error-container": "#93000a", "on-secondary-fixed": "#001a42", "inverse-primary": "#c3c0ff", "on-secondary-container": "#fefcff", "on-primary-fixed": "#0f0069", "surface-container": "#eaedff", "inverse-on-surface": "#eef0ff", "primary-container": "#4f46e5", "on-primary": "#ffffff", secondary: "#0058be", "surface-bright": "#faf8ff", "tertiary-fixed": "#ffdbcc", surface: "#faf8ff", "tertiary-container": "#a44100", "on-background": "#131b2e", "surface-tint": "#4d44e3", "on-tertiary": "#ffffff", "surface-container-highest": "#dae2fd", "secondary-fixed": "#d8e2ff", "on-tertiary-fixed-variant": "#7b2f00", tertiary: "#7e3000", "on-tertiary-fixed": "#351000", "on-primary-container": "#dad7ff", "surface-dim": "#d2d9f4", "on-surface": "#131b2e", error: "#ba1a1a", outline: "#777587", "on-error": "#ffffff"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, spacing: {"container-max": "1280px", "stack-lg": "32px", "stack-sm": "8px", gutter: "24px", "stack-md": "16px", "margin-mobile": "20px", "margin-desktop": "64px"}, fontFamily: {"display-lg": ["Barlow Condensed"], "label-sm": ["Anybody"], "headline-md": ["Barlow Condensed"], "body-lg": ["Montserrat"], "body-md": ["Montserrat"], headline: ["Barlow Condensed"], display: ["Barlow Condensed"], body: ["Montserrat"], label: ["Anybody"], "display-lg-mobile": ["Barlow Condensed"]}, fontSize: {"label-sm": ["14px", {lineHeight: "20px", letterSpacing: "0.05em", fontWeight: "600"}], "display-lg": ["48px", {lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700"}], "headline-md": ["24px", {lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "display-lg-mobile": ["32px", {lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700"}]}}}};</script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex overflow-x-hidden">
+
+<!-- ════════ CINEMATIC LOADING OVERLAY ════════ -->
+<div id="cinematicOverlay" class="cinematic-overlay">
+    <div class="max-w-md w-full mx-auto px-8 text-center">
+        <!-- AI Brain Animation -->
+        <div class="relative w-28 h-28 mx-auto mb-10">
+            <div class="absolute inset-0 rounded-full bg-primary/10 animate-ping" style="animation-duration:2.5s;"></div>
+            <div class="absolute inset-3 rounded-full bg-primary/15 animate-ping" style="animation-duration:2.5s;animation-delay:0.4s;"></div>
+            <div class="relative w-28 h-28 rounded-full bg-gradient-to-br from-primary via-primary-container to-secondary flex items-center justify-center shadow-2xl shadow-primary/30" style="animation: brainPulse 2s ease-in-out infinite;">
+                <span class="material-symbols-outlined text-white text-[48px]" style="font-variation-settings:'FILL' 1;">neurology</span>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <h3 class="font-headline-md text-headline-md text-on-surface mb-2" id="overlayTitle">Processing Application</h3>
+        <p class="text-on-surface-variant text-sm mb-10" id="overlaySubtext">
+            Analyzing your financial profile
+            <span class="typing-dot inline-block w-1 h-1 bg-primary rounded-full mx-0.5"></span>
+            <span class="typing-dot inline-block w-1 h-1 bg-primary rounded-full mx-0.5"></span>
+            <span class="typing-dot inline-block w-1 h-1 bg-primary rounded-full mx-0.5"></span>
+        </p>
+
+        <!-- Journey Steps -->
+        <div class="space-y-4 text-left mb-10">
+            <div class="journey-step-item flex items-center gap-4" data-idx="0">
+                <div class="step-icon w-9 h-9 rounded-full bg-surface-container-high border-2 border-outline-variant/30 flex items-center justify-center flex-shrink-0 transition-all duration-300">
+                    <span class="material-symbols-outlined text-[16px] text-on-surface-variant">upload_file</span>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-bold text-on-surface">Application Submitted</p>
+                    <div class="h-1 bg-surface-container-high rounded-full mt-1.5 overflow-hidden"><div class="step-progress h-full bg-primary rounded-full"></div></div>
+                </div>
+                <span class="material-symbols-outlined text-emerald-500 text-[18px] opacity-0 transition-opacity" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            </div>
+            <div class="journey-step-item flex items-center gap-4" data-idx="1">
+                <div class="step-icon w-9 h-9 rounded-full bg-surface-container-high border-2 border-outline-variant/30 flex items-center justify-center flex-shrink-0 transition-all duration-300">
+                    <span class="material-symbols-outlined text-[16px] text-on-surface-variant">person_search</span>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-bold text-on-surface">Scanning Applicant Profile</p>
+                    <div class="h-1 bg-surface-container-high rounded-full mt-1.5 overflow-hidden"><div class="step-progress h-full bg-primary rounded-full"></div></div>
+                </div>
+                <span class="material-symbols-outlined text-emerald-500 text-[18px] opacity-0 transition-opacity" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            </div>
+            <div class="journey-step-item flex items-center gap-4" data-idx="2">
+                <div class="step-icon w-9 h-9 rounded-full bg-surface-container-high border-2 border-outline-variant/30 flex items-center justify-center flex-shrink-0 transition-all duration-300">
+                    <span class="material-symbols-outlined text-[16px] text-on-surface-variant">credit_score</span>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-bold text-on-surface">Evaluating Credit Profile</p>
+                    <div class="h-1 bg-surface-container-high rounded-full mt-1.5 overflow-hidden"><div class="step-progress h-full bg-primary rounded-full"></div></div>
+                </div>
+                <span class="material-symbols-outlined text-emerald-500 text-[18px] opacity-0 transition-opacity" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            </div>
+            <div class="journey-step-item flex items-center gap-4" data-idx="3">
+                <div class="step-icon w-9 h-9 rounded-full bg-surface-container-high border-2 border-outline-variant/30 flex items-center justify-center flex-shrink-0 transition-all duration-300">
+                    <span class="material-symbols-outlined text-[16px] text-on-surface-variant">account_balance</span>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-bold text-on-surface">Checking Financial Stability</p>
+                    <div class="h-1 bg-surface-container-high rounded-full mt-1.5 overflow-hidden"><div class="step-progress h-full bg-primary rounded-full"></div></div>
+                </div>
+                <span class="material-symbols-outlined text-emerald-500 text-[18px] opacity-0 transition-opacity" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            </div>
+            <div class="journey-step-item flex items-center gap-4" data-idx="4">
+                <div class="step-icon w-9 h-9 rounded-full bg-surface-container-high border-2 border-outline-variant/30 flex items-center justify-center flex-shrink-0 transition-all duration-300">
+                    <span class="material-symbols-outlined text-[16px] text-on-surface-variant">monitoring</span>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-bold text-on-surface">Analyzing Repayment Capability</p>
+                    <div class="h-1 bg-surface-container-high rounded-full mt-1.5 overflow-hidden"><div class="step-progress h-full bg-primary rounded-full"></div></div>
+                </div>
+                <span class="material-symbols-outlined text-emerald-500 text-[18px] opacity-0 transition-opacity" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            </div>
+            <div class="journey-step-item flex items-center gap-4" data-idx="5">
+                <div class="step-icon w-9 h-9 rounded-full bg-surface-container-high border-2 border-outline-variant/30 flex items-center justify-center flex-shrink-0 transition-all duration-300">
+                    <span class="material-symbols-outlined text-[16px] text-on-surface-variant">auto_awesome</span>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-bold text-on-surface">Generating AI Explanation</p>
+                    <div class="h-1 bg-surface-container-high rounded-full mt-1.5 overflow-hidden"><div class="step-progress h-full bg-primary rounded-full"></div></div>
+                </div>
+                <span class="material-symbols-outlined text-emerald-500 text-[18px] opacity-0 transition-opacity" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+            <div id="overlayProgress" class="h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all duration-500 ease-out" style="width:0%"></div>
+        </div>
+        <p class="text-xs text-on-surface-variant mt-3" id="overlayPercentage">0%</p>
+    </div>
+</div>
+
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-white/70 backdrop-blur-xl border-r border-outline-variant/10 shadow-xl shadow-primary/5 flex flex-col p-stack-md gap-stack-sm z-50">
+<div class="mb-stack-lg px-2 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white">
+    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<div>
+    <h1 class="font-headline-md text-headline-md font-bold text-primary">ExplainAI</h1>
+    <p class="text-on-surface-variant font-label-sm text-label-sm">LoanWise Assistant</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1 flex-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high/50 transition-all duration-200 cursor-pointer active:scale-95 rounded-xl hover-icon" href="/">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary/10 text-primary rounded-xl transition-all duration-200 cursor-pointer active:scale-95 hover-icon" href="/apply.html">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">description</span>
+<span class="font-label-sm text-label-sm">Application</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high/50 transition-all duration-200 cursor-pointer active:scale-95 rounded-xl hover-icon" href="/results.html">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-sm text-label-sm">Results</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high/50 transition-all duration-200 cursor-pointer active:scale-95 rounded-xl hover-icon" href="/chat.html">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-label-sm text-label-sm">Chat</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high/50 transition-all duration-200 cursor-pointer active:scale-95 rounded-xl hover-icon" href="/dashboard.html">
+<span class="material-symbols-outlined">assessment</span>
+<span class="font-label-sm text-label-sm">Reports</span>
+</a>
+</nav>
+<button class="mt-auto w-full py-3 bg-primary text-on-primary rounded-xl font-label-sm flex items-center justify-center gap-2 hover:opacity-90 transition-all btn-ripple" onclick="window.location.reload()">
+<span class="material-symbols-outlined">add</span>
+            New Application
+        </button>
+<div class="mt-stack-md flex items-center gap-3 p-2 border-t border-outline-variant/10">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold">JD</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-on-surface">John Doe</span>
+<span class="text-xs text-on-surface-variant">Premium User</span>
+</div>
+</div>
+</aside>
+
+<!-- Main Content -->
+<main class="flex-1 ml-64 p-margin-desktop min-h-screen relative overflow-y-auto">
+<div class="fixed top-0 right-0 -z-10 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] pointer-events-none translate-x-1/2 -translate-y-1/2"></div>
+<div class="fixed bottom-0 left-64 -z-10 w-[600px] h-[600px] bg-secondary/5 rounded-full blur-[100px] pointer-events-none -translate-x-1/4 translate-y-1/4"></div>
+
+<header class="max-w-4xl mx-auto mb-stack-lg form-section">
+<h2 class="font-display-lg text-display-lg text-on-surface mb-2">New Loan Application</h2>
+<p class="text-on-surface-variant font-body-lg text-body-lg">Provide your details for an AI-powered financial risk assessment.</p>
+</header>
+
+<!-- Progress Indicator -->
+<div class="max-w-4xl mx-auto mb-10 form-section">
+<div class="flex justify-between items-center mb-4">
+<span class="font-label-sm text-primary uppercase tracking-widest">Application Progress</span>
+<span class="font-label-sm text-on-surface-variant" id="progressText">0% Complete</span>
+</div>
+<div class="h-[6px] w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all duration-700 ease-out" id="progressBar" style="width:0%"></div>
+</div>
+</div>
+
+<!-- Application Form -->
+<section class="max-w-4xl mx-auto glass-card rounded-3xl overflow-hidden relative">
+<form id="loanForm" class="p-10 space-y-12">
+<!-- Section 1: Personal -->
+<div class="space-y-6 form-section">
+<div class="flex items-center gap-3 border-b border-outline-variant/20 pb-4 mb-8 hover-icon">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">person</span>
+</div>
+<h3 class="font-headline-md text-headline-md">Personal Profile</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant">Full Name</label>
+<input id="applicantName" class="w-full bg-white/50 border border-outline-variant/30 rounded-xl py-3 px-4 font-body-md input-focus-glow transition-all" placeholder="e.g. Jane Smith" type="text" required>
+</div>
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant">PAN Card Number</label>
+<input id="panCardNumber" class="w-full bg-white/50 border border-outline-variant/30 rounded-xl py-3 px-4 font-body-md input-focus-glow transition-all uppercase" placeholder="ABCDE1234F" type="text" pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" required title="Format: 5 letters, 4 numbers, 1 letter">
+</div>
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant">Age</label>
+<input id="age" class="w-full bg-white/50 border border-outline-variant/30 rounded-xl py-3 px-4 font-body-md input-focus-glow transition-all" placeholder="e.g. 32" type="number" min="18" max="100" required>
+</div>
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant">City</label>
+<input id="city" class="w-full bg-white/50 border border-outline-variant/30 rounded-xl py-3 px-4 font-body-md input-focus-glow transition-all" placeholder="e.g. Mumbai" type="text" required>
+</div>
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant">State</label>
+<input id="state" class="w-full bg-white/50 border border-outline-variant/30 rounded-xl py-3 px-4 font-body-md input-focus-glow transition-all" placeholder="e.g. MH" type="text" required>
+</div>
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant">Employment Type</label>
+<select id="employmentType" class="w-full bg-white/50 border border-outline-variant/30 rounded-xl py-3 px-4 font-body-md input-focus-glow transition-all appearance-none cursor-pointer" required>
+<option value="Salaried">Salaried</option>
+<option value="Self-Employed">Self-Employed</option>
+<option value="Business Owner">Business Owner</option>
+<option value="Freelancer">Freelancer</option>
+<option value="Unemployed">Unemployed</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant">Years Employed</label>
+<input id="yearsEmployed" class="w-full bg-white/50 border border-outline-variant/30 rounded-xl py-3 px-4 font-body-md input-focus-glow transition-all" placeholder="e.g. 6" type="number" min="0" required>
+</div>
+</div>
+</div>
+<!-- Section 2: Financial -->
+<div class="space-y-6 form-section">
+<div class="flex items-center gap-3 border-b border-outline-variant/20 pb-4 mb-8 hover-icon">
+<div class="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<h3 class="font-headline-md text-headline-md">Loan & Credit</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-lg">
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant font-semibold">Annual Income (₹)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-outline">₹</span>
+<input id="income" class="w-full bg-white/50 border border-outline-variant/30 rounded-xl py-3 pl-10 pr-4 font-body-md input-focus-glow transition-all" placeholder="95,000" type="number" min="0" required>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant font-semibold">Desired Loan Amount (₹)</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-outline">₹</span>
+<input id="loanAmount" class="w-full bg-white/50 border border-outline-variant/30 rounded-xl py-3 pl-10 pr-4 font-body-md input-focus-glow transition-all" placeholder="50,000" type="number" min="1000" required>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant">Loan Tenure (Years)</label>
+<input id="tenure" class="w-full bg-white/50 border border-outline-variant/30 rounded-xl py-3 px-4 font-body-md input-focus-glow transition-all" placeholder="5" type="number" min="1" max="30" required>
+</div>
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant">CIBIL / Credit Score</label>
+<input id="creditScore" class="w-full bg-white/50 border border-outline-variant/30 rounded-xl py-3 px-4 font-body-md input-focus-glow transition-all" placeholder="720" type="number" min="300" max="850" required>
+</div>
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant">Loan Purpose</label>
+<select id="loanPurpose" class="w-full bg-white/50 border border-outline-variant/30 rounded-xl py-3 px-4 font-body-md input-focus-glow transition-all appearance-none cursor-pointer" required>
+<option value="Home">Home</option>
+<option value="Car">Car</option>
+<option value="Education">Education</option>
+<option value="Personal">Personal</option>
+<option value="Business">Business</option>
+<option value="Medical">Medical</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant">Debt-to-Income Ratio</label>
+<input id="debtToIncomeRatio" class="w-full bg-white/50 border border-outline-variant/30 rounded-xl py-3 px-4 font-body-md input-focus-glow transition-all" placeholder="0.25" type="number" step="0.01" min="0" max="1" required>
+</div>
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant">Existing Loans</label>
+<input id="existingLoans" class="w-full bg-white/50 border border-outline-variant/30 rounded-xl py-3 px-4 font-body-md input-focus-glow transition-all" placeholder="1" type="number" min="0" required>
+</div>
+</div>
+</div>
+<!-- Section 3: Assets -->
+<div class="space-y-6 form-section">
+<div class="flex items-center gap-3 border-b border-outline-variant/20 pb-4 mb-8 hover-icon">
+<div class="w-10 h-10 rounded-xl bg-tertiary-container/10 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">account_balance</span>
+</div>
+<h3 class="font-headline-md text-headline-md">Collateral & Assets</h3>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-stack-md">
+<div class="p-5 bg-white/40 border border-outline-variant/20 rounded-2xl space-y-3 hover-lift">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-xl">verified_user</span>
+<span class="font-label-sm">Has Collateral</span>
+</div>
+<select id="hasCollateral" class="w-full bg-transparent border-b border-outline-variant/40 focus:border-primary px-0 py-1 transition-all focus:ring-0 outline-none">
+<option value="true">Yes</option>
+<option value="false">No</option>
+</select>
+</div>
+<div class="p-5 bg-white/40 border border-outline-variant/20 rounded-2xl space-y-3 hover-lift">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-xl">savings</span>
+<span class="font-label-sm">Collateral Value ($)</span>
+</div>
+<input id="collateralValue" class="w-full bg-transparent border-b border-outline-variant/40 focus:border-primary px-0 py-1 transition-all focus:ring-0 outline-none" placeholder="60,000" type="number" min="0">
+</div>
+</div>
+</div>
+<!-- Submit -->
+<div class="pt-8 flex flex-col items-center gap-4 form-section">
+<button id="submitBtn" class="pulse-effect w-full max-w-md py-4 bg-gradient-to-r from-primary to-primary-container text-on-primary rounded-xl font-bold text-lg hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-primary/25 flex items-center justify-center gap-3 btn-ripple" type="submit">
+                    Check Eligibility
+                    <span class="material-symbols-outlined">auto_awesome</span>
+</button>
+<p class="text-xs text-on-surface-variant text-center px-4">
+                    By clicking check eligibility, you consent to our <a class="text-primary hover:underline" href="#">Financial Disclosure</a> and AI-based credit risk analysis.
+                </p>
+</div>
+</form>
+</section>
+
+<!-- Footer -->
+<footer class="max-w-4xl mx-auto mt-20 pt-10 border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-4 text-on-surface-variant font-label-sm mb-10">
+<span>© 2024 ExplainAI LoanWise. All rights reserved.</span>
+<div class="flex gap-6">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Contact Support</a>
+</div>
+</footer>
+</main>
+
+<script>
+    // ── IntersectionObserver for Form Sections ──
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                sectionObserver.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.form-section').forEach(s => sectionObserver.observe(s));
+
+    // ── Track Progress ──
+    const fields = document.querySelectorAll('#loanForm input, #loanForm select');
+    fields.forEach(f => f.addEventListener('input', updateProgress));
+    function updateProgress() {
+        const total = fields.length;
+        let filled = 0;
+        fields.forEach(f => { if (f.value && f.value !== '') filled++; });
+        const pct = Math.round((filled / total) * 100);
+        document.getElementById('progressBar').style.width = pct + '%';
+        document.getElementById('progressText').textContent = pct + '% Complete';
+    }
+
+    // ── PAN Auto-fill ──
+    document.getElementById('panCardNumber').addEventListener('input', (e) => {
+        const pan = e.target.value.toUpperCase();
+        if (/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(pan)) {
+            const numPart = parseInt(pan.substring(5, 9));
+            document.getElementById('applicantName').value = 'Auto-filled User';
+            document.getElementById('age').value = (25 + (numPart % 30)).toString();
+            document.getElementById('city').value = 'Mumbai';
+            document.getElementById('state').value = 'MH';
+            document.getElementById('income').value = (500000 + (numPart * 1000)).toString();
+            document.getElementById('employmentType').value = 'Salaried';
+            document.getElementById('yearsEmployed').value = (numPart % 10).toString();
+            document.getElementById('creditScore').value = (600 + (numPart % 250)).toString();
+            document.getElementById('existingLoans').value = (numPart % 3).toString();
+            updateProgress();
+
+            const btn = document.querySelector('button[type="submit"]');
+            const origText = btn.innerHTML;
+            btn.innerHTML = '<span class="material-symbols-outlined" style="font-variation-settings:\'FILL\' 1;">check_circle</span> CIBIL & Data auto-filled';
+            btn.classList.add('from-emerald-500', 'to-emerald-600');
+            btn.classList.remove('from-primary', 'to-primary-container');
+            setTimeout(() => {
+                btn.innerHTML = origText;
+                btn.classList.remove('from-emerald-500', 'to-emerald-600');
+                btn.classList.add('from-primary', 'to-primary-container');
+            }, 2000);
+        }
+    });
+
+    // ── Cinematic Overlay Animation ──
+    function showCinematicOverlay() {
+        const overlay = document.getElementById('cinematicOverlay');
+        overlay.classList.add('active');
+
+        const steps = overlay.querySelectorAll('.journey-step-item');
+        const progressBar = document.getElementById('overlayProgress');
+        const pctLabel = document.getElementById('overlayPercentage');
+
+        const stepMessages = [
+            'Submitting application...',
+            'Scanning financial profile...',
+            'Evaluating credit history...',
+            'Checking financial stability...',
+            'Analyzing repayment capability...',
+            'Generating AI assessment...'
+        ];
+
+        steps.forEach((step, i) => {
+            setTimeout(() => {
+                // Activate step
+                step.classList.add('active');
+                const icon = step.querySelector('.step-icon');
+                icon.classList.remove('bg-surface-container-high', 'border-outline-variant/30');
+                icon.classList.add('bg-primary', 'border-primary');
+                icon.querySelector('.material-symbols-outlined').classList.remove('text-on-surface-variant');
+                icon.querySelector('.material-symbols-outlined').classList.add('text-white');
+
+                // Update overlay text
+                document.getElementById('overlayTitle').textContent = stepMessages[i];
+
+                // Update progress
+                const pct = Math.round(((i + 1) / steps.length) * 100);
+                progressBar.style.width = pct + '%';
+                pctLabel.textContent = pct + '%';
+
+                // Mark previous step as completed
+                if (i > 0) {
+                    steps[i - 1].classList.add('completed');
+                    const check = steps[i - 1].querySelector('.material-symbols-outlined:last-child');
+                    if (check) check.style.opacity = '1';
+                }
+
+                // Mark last step complete
+                if (i === steps.length - 1) {
+                    setTimeout(() => {
+                        step.classList.add('completed');
+                        const check = step.querySelector('.material-symbols-outlined:last-child');
+                        if (check) check.style.opacity = '1';
+                        document.getElementById('overlayTitle').textContent = 'Analysis Complete!';
+                    }, 600);
+                }
+            }, 400 + i * 700);
+        });
+    }
+
+    function hideCinematicOverlay() {
+        document.getElementById('cinematicOverlay').classList.remove('active');
+    }
+
+    // ── Form Submit ──
+    document.getElementById('loanForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.classList.remove('pulse-effect');
+
+        // Show cinematic overlay
+        showCinematicOverlay();
+
+        const body = {
+            applicantName: document.getElementById('applicantName').value,
+            panCardNumber: document.getElementById('panCardNumber').value.toUpperCase(),
+            age: Number(document.getElementById('age').value),
+            income: Number(document.getElementById('income').value),
+            creditScore: Number(document.getElementById('creditScore').value),
+            employmentType: document.getElementById('employmentType').value,
+            yearsEmployed: Number(document.getElementById('yearsEmployed').value),
+            loanAmount: Number(document.getElementById('loanAmount').value),
+            loanPurpose: document.getElementById('loanPurpose').value,
+            tenure: Number(document.getElementById('tenure').value),
+            debtToIncomeRatio: Number(document.getElementById('debtToIncomeRatio').value),
+            existingLoans: Number(document.getElementById('existingLoans').value),
+            hasCollateral: document.getElementById('hasCollateral').value === 'true',
+            collateralValue: Number(document.getElementById('collateralValue').value) || null,
+            city: document.getElementById('city').value,
+            state: document.getElementById('state').value,
+        };
+
+        try {
+            const res = await fetch('/api/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+            const data = await res.json();
+            if (data.success) {
+                localStorage.setItem('lastResult', JSON.stringify(data.data));
+                // Wait for animation to finish, then navigate
+                const totalAnimTime = 400 + 6 * 700 + 1000;
+                const elapsed = Date.now();
+                const remaining = Math.max(totalAnimTime - (Date.now() - elapsed), 1200);
+                setTimeout(() => {
+                    window.location.href = '/results.html?id=' + data.data.application.id;
+                }, remaining);
+            } else {
+                hideCinematicOverlay();
+                alert('Error: ' + data.error);
+                btn.innerHTML = 'Check Eligibility <span class="material-symbols-outlined">auto_awesome</span>';
+                btn.disabled = false;
+                btn.classList.add('pulse-effect');
+            }
+        } catch (err) {
+            hideCinematicOverlay();
+            alert('Connection error: ' + err.message);
+            btn.innerHTML = 'Check Eligibility <span class="material-symbols-outlined">auto_awesome</span>';
+            btn.disabled = false;
+            btn.classList.add('pulse-effect');
+        }
+    });
+
+    // Sidebar nav highlight
+    const navLinks = document.querySelectorAll('aside nav a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.forEach(l => { l.classList.remove('bg-primary/10', 'text-primary'); l.classList.add('text-on-surface-variant'); });
+            link.classList.add('bg-primary/10', 'text-primary'); link.classList.remove('text-on-surface-variant');
+        });
+    });
+</script>
+</body></html>

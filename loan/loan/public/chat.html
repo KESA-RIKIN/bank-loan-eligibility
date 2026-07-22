@@ -1,0 +1,143 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ExplainAI LoanWise | Chat Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;700&amp;family=Montserrat:wght@400;500;700&amp;family=Anybody:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"surface-container-low": "#f2f3ff", "outline-variant": "#c7c4d8", "primary-fixed": "#e2dfff", "error-container": "#ffdad6", "surface-container-lowest": "#ffffff", "secondary-container": "#2170e4", "inverse-surface": "#283044", background: "#faf8ff", "on-tertiary-container": "#ffd2be", "surface-container-high": "#e2e7ff", primary: "#3525cd", "on-secondary": "#ffffff", "surface-variant": "#dae2fd", "on-surface-variant": "#464555", "on-secondary-fixed": "#001a42", "inverse-primary": "#c3c0ff", "surface-container": "#eaedff", "inverse-on-surface": "#eef0ff", "primary-container": "#4f46e5", "on-primary": "#ffffff", secondary: "#0058be", "surface-bright": "#faf8ff", surface: "#faf8ff", "on-background": "#131b2e", "surface-tint": "#4d44e3", "on-tertiary": "#ffffff", "surface-container-highest": "#dae2fd", tertiary: "#7e3000", "on-primary-container": "#dad7ff", "surface-dim": "#d2d9f4", "on-surface": "#131b2e", error: "#ba1a1a", outline: "#777587", "on-error": "#ffffff"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, spacing: {"container-max": "1280px", "stack-lg": "32px", "stack-sm": "8px", gutter: "24px", "stack-md": "16px", "margin-mobile": "20px", "margin-desktop": "64px"}, fontFamily: {"display-lg": ["Barlow Condensed"], "headline-md": ["Barlow Condensed"], "body-lg": ["Montserrat"], "body-md": ["Montserrat"], "label-sm": ["Anybody"], headline: ["Barlow Condensed"], display: ["Barlow Condensed"], body: ["Montserrat"], label: ["Anybody"]}, fontSize: {"display-lg": ["48px", {lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700"}], "headline-md": ["24px", {lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "label-sm": ["14px", {lineHeight: "20px", letterSpacing: "0.05em", fontWeight: "600"}]}}}};</script>
+<script>
+    if (!localStorage.getItem('isLoggedIn')) { window.location.href = '/login.html'; }
+    document.addEventListener('DOMContentLoaded', () => {
+        const aside = document.querySelector('aside');
+        if (aside) {
+            const logoutBtn = document.createElement('button');
+            logoutBtn.className = 'mt-4 w-full py-3 bg-red-50 text-red-600 rounded-xl font-label-sm flex items-center justify-center gap-2 hover:bg-red-100 transition-all';
+            logoutBtn.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
+            logoutBtn.onclick = () => { localStorage.removeItem('isLoggedIn'); window.location.href = '/login.html'; };
+            aside.appendChild(logoutBtn);
+        } else {
+            const logoutBtn = document.createElement('button');
+            logoutBtn.className = 'fixed bottom-4 right-4 px-4 py-2 bg-red-600 text-white rounded-lg shadow-lg z-50 flex items-center gap-2';
+            logoutBtn.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
+            logoutBtn.onclick = () => { localStorage.removeItem('isLoggedIn'); window.location.href = '/login.html'; };
+            document.body.appendChild(logoutBtn);
+        }
+    });
+</script>
+<style>
+    body { background-color: #faf8ff; color: #131b2e; overflow-x: hidden; }
+    .glass-card { background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); border: 1px solid rgba(53,37,205,0.1); box-shadow: 0 20px 40px -12px rgba(53,37,205,0.08); }
+    ::-webkit-scrollbar { width: 6px; } ::-webkit-scrollbar-thumb { background: #c7c4d8; border-radius: 10px; }
+    .chat-bubble-user { background: #e2dfff; color: #131b2e; border-radius: 16px 16px 0 16px; padding: 12px 16px; max-width: 80%; align-self: flex-end; }
+    .chat-bubble-ai { background: rgba(255,255,255,0.8); border: 1px solid #c7c4d8; color: #131b2e; border-radius: 16px 16px 16px 0; padding: 12px 16px; max-width: 80%; align-self: flex-start; }
+</style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Sidebar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-white/70 backdrop-blur-xl border-r border-outline-variant/10 shadow-xl shadow-primary/5 flex flex-col p-stack-md gap-stack-sm z-50">
+<div class="flex items-center gap-3 mb-8 px-2">
+<div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary leading-tight">ExplainAI</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant opacity-70">LoanWise Assistant</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="flex items-center gap-3 p-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high/50 transition-all" href="/"><span class="material-symbols-outlined">home</span><span class="font-label-sm">Home</span></a>
+<a class="flex items-center gap-3 p-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high/50 transition-all" href="/apply.html"><span class="material-symbols-outlined">description</span><span class="font-label-sm">Application</span></a>
+<a class="flex items-center gap-3 p-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high/50 transition-all" href="/results.html"><span class="material-symbols-outlined">analytics</span><span class="font-label-sm">Results</span></a>
+<a class="flex items-center gap-3 p-3 rounded-xl bg-primary/10 text-primary transition-all" href="/chat.html"><span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">forum</span><span class="font-label-sm">Chat</span></a>
+<a class="flex items-center gap-3 p-3 rounded-xl text-on-surface-variant hover:bg-surface-container-high/50 transition-all" href="/dashboard.html"><span class="material-symbols-outlined">assessment</span><span class="font-label-sm">All Reports</span></a>
+</nav>
+<button class="mt-auto w-full py-3 bg-primary text-on-primary rounded-xl font-label-sm flex items-center justify-center gap-2 hover:opacity-90" onclick="window.location.href='/apply.html'">
+<span class="material-symbols-outlined">add</span> New Application</button>
+</aside>
+<!-- Main -->
+<main class="ml-64 p-margin-desktop min-h-screen">
+<div class="max-w-4xl mx-auto h-[calc(100vh-128px)] flex flex-col">
+<h2 class="font-display-lg text-display-lg mb-8">AI <span class="text-primary">Chat Assistant</span></h2>
+
+<div class="glass-card rounded-3xl flex-1 flex flex-col overflow-hidden shadow-sm">
+    <div id="chatMessages" class="flex-1 p-6 overflow-y-auto flex flex-col gap-4">
+        <div class="chat-bubble-ai shadow-sm">
+            Hello! I'm your ExplainAI Loan Assistant. I can help you understand our loan criteria, explain an application decision, or answer any questions you have about the process. How can I help you today?
+        </div>
+    </div>
+    
+    <div class="p-4 border-t border-outline-variant/20 bg-white/60 backdrop-blur-md">
+        <form id="chatForm" class="flex gap-2">
+            <input type="text" id="chatInput" placeholder="Ask about rules, criteria, or a specific application ID..." class="flex-1 rounded-xl border border-outline-variant/30 px-4 py-3 focus:outline-none focus:border-primary shadow-sm bg-white" required>
+            <button type="submit" id="sendBtn" class="bg-primary text-white rounded-xl px-6 py-3 font-label-sm hover:opacity-90 flex items-center gap-2 transition-opacity disabled:opacity-50">
+                <span class="material-symbols-outlined">send</span> <span class="hidden sm:inline">Send</span>
+            </button>
+        </form>
+    </div>
+</div>
+</div>
+</main>
+<script>
+    const form = document.getElementById('chatForm');
+    const input = document.getElementById('chatInput');
+    const messages = document.getElementById('chatMessages');
+    const sendBtn = document.getElementById('sendBtn');
+
+    function addMessage(text, isUser) {
+        const div = document.createElement('div');
+        div.className = isUser ? 'chat-bubble-user shadow-sm' : 'chat-bubble-ai shadow-sm';
+        // Simple markdown parsing for bold text if AI
+        if (!isUser) {
+            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        }
+        div.innerHTML = text;
+        messages.appendChild(div);
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const text = input.value.trim();
+        if (!text) return;
+        
+        addMessage(text, true);
+        input.value = '';
+        input.disabled = true;
+        sendBtn.disabled = true;
+        
+        // Add loading indicator
+        const loadingId = 'loading-' + Date.now();
+        const loadingDiv = document.createElement('div');
+        loadingDiv.id = loadingId;
+        loadingDiv.className = 'chat-bubble-ai shadow-sm flex items-center gap-2';
+        loadingDiv.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> Thinking...';
+        messages.appendChild(loadingDiv);
+        messages.scrollTop = messages.scrollHeight;
+
+        try {
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text })
+            });
+            const data = await res.json();
+            
+            document.getElementById(loadingId).remove();
+            
+            if (data.success) {
+                addMessage(data.data.reply, false);
+            } else {
+                addMessage('Error: ' + data.error, false);
+            }
+        } catch (err) {
+            document.getElementById(loadingId).remove();
+            addMessage('Failed to communicate with the server.', false);
+        } finally {
+            input.disabled = false;
+            sendBtn.disabled = false;
+            input.focus();
+        }
+    });
+</script>
+</body></html>

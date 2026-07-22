@@ -1,0 +1,55 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Register | ExplainAI LoanWise</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;700&amp;family=Montserrat:wght@400;500;700&amp;family=Anybody:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script>if (localStorage.getItem('isLoggedIn')) { window.location.href = '/apply.html'; }</script>
+<style>
+    body { background-color: #faf8ff; color: #131b2e; overflow-x: hidden; }
+    .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 30px 50px -12px rgba(53, 37, 205, 0.08); }
+</style>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: { primary: "#3525cd", secondary: "#0058be", background: "#faf8ff", surface: "#faf8ff", "on-surface": "#131b2e", "on-surface-variant": "#464555", outline: "#777587" }, fontFamily: { display: ["Barlow Condensed"], body: ["Montserrat"], label: ["Anybody"] }}}};</script>
+</head>
+<body class="font-body min-h-screen flex items-center justify-center relative py-10">
+    <div class="fixed top-0 right-0 -z-10 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] pointer-events-none translate-x-1/2 -translate-y-1/2"></div>
+    <div class="fixed bottom-0 left-0 -z-10 w-[600px] h-[600px] bg-secondary/5 rounded-full blur-[100px] pointer-events-none -translate-x-1/4 translate-y-1/4"></div>
+
+    <main class="w-full max-w-md p-8 glass-card rounded-3xl m-4 relative">
+        <div class="text-center mb-8">
+            <h1 class="font-display text-4xl font-bold text-primary mb-2">Create Account</h1>
+            <p class="text-on-surface-variant font-label text-sm tracking-wide">Join ExplainAI LoanWise</p>
+        </div>
+
+        <form class="space-y-5" onsubmit="event.preventDefault(); localStorage.setItem('isLoggedIn', 'true'); window.location.href='/apply.html'">
+            <div class="space-y-2">
+                <label class="font-label text-sm text-on-surface-variant font-semibold">Full Name</label>
+                <input class="w-full bg-white/50 border border-outline/30 rounded-xl py-3 px-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" type="text" placeholder="John Doe" required>
+            </div>
+
+            <div class="space-y-2">
+                <label class="font-label text-sm text-on-surface-variant font-semibold">Email Address</label>
+                <input class="w-full bg-white/50 border border-outline/30 rounded-xl py-3 px-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" type="email" placeholder="john@example.com" required>
+            </div>
+            
+            <div class="space-y-2">
+                <label class="font-label text-sm text-on-surface-variant font-semibold">Password</label>
+                <input class="w-full bg-white/50 border border-outline/30 rounded-xl py-3 px-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" type="password" placeholder="••••••••" required minlength="8">
+            </div>
+
+            <div class="space-y-2">
+                <label class="font-label text-sm text-on-surface-variant font-semibold">Confirm Password</label>
+                <input class="w-full bg-white/50 border border-outline/30 rounded-xl py-3 px-4 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" type="password" placeholder="••••••••" required minlength="8">
+            </div>
+
+            <button type="submit" class="w-full py-3 mt-4 bg-primary text-white rounded-xl font-bold text-lg hover:opacity-90 active:scale-[0.98] transition-all shadow-lg shadow-primary/25">
+                Register
+            </button>
+        </form>
+
+        <p class="mt-8 text-center text-sm text-on-surface-variant">
+            Already have an account? <a href="/login.html" class="text-primary font-bold hover:underline">Sign In</a>
+        </p>
+    </main>
+</body></html>

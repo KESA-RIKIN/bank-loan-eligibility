@@ -1,0 +1,370 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>ExplainAI LoanWise | Transparent AI Loan Eligibility</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;700&amp;family=Montserrat:wght@400;500;700&amp;family=Anybody:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #faf8ff;
+            color: #131b2e;
+            overflow-x: hidden;
+        }
+
+        .font-display { font-family: 'Plus Jakarta Sans', sans-serif; }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(53, 37, 205, 0.08);
+        }
+
+        .dark .glass-card {
+            background: rgba(40, 48, 68, 0.7);
+            border: 1px solid rgba(199, 196, 216, 0.1);
+        }
+
+        .glass-edge {
+            position: relative;
+        }
+        .glass-edge::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            padding: 1px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, rgba(255,255,255,0.4), transparent 50%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .gradient-text {
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            background-image: linear-gradient(to right, #3525cd, #0058be);
+        }
+
+        .hero-blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.4;
+            border-radius: 50%;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+    </style>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"surface-container-low": "#f2f3ff", "outline-variant": "#c7c4d8", "primary-fixed": "#e2dfff", "error-container": "#ffdad6", "surface-container-lowest": "#ffffff", "secondary-container": "#2170e4", "inverse-surface": "#283044", background: "#faf8ff", "on-tertiary-container": "#ffd2be", "surface-container-high": "#e2e7ff", "on-secondary-fixed-variant": "#004395", "primary-fixed-dim": "#c3c0ff", "tertiary-fixed-dim": "#ffb695", "secondary-fixed-dim": "#adc6ff", primary: "#3525cd", "on-secondary": "#ffffff", "surface-variant": "#dae2fd", "on-primary-fixed-variant": "#3323cc", "on-surface-variant": "#464555", "on-error-container": "#93000a", "on-secondary-fixed": "#001a42", "inverse-primary": "#c3c0ff", "on-secondary-container": "#fefcff", "on-primary-fixed": "#0f0069", "surface-container": "#eaedff", "inverse-on-surface": "#eef0ff", "primary-container": "#4f46e5", "on-primary": "#ffffff", secondary: "#0058be", "surface-bright": "#faf8ff", "tertiary-fixed": "#ffdbcc", surface: "#faf8ff", "tertiary-container": "#a44100", "on-background": "#131b2e", "surface-tint": "#4d44e3", "on-tertiary": "#ffffff", "surface-container-highest": "#dae2fd", "secondary-fixed": "#d8e2ff", "on-tertiary-fixed-variant": "#7b2f00", tertiary: "#7e3000", "on-tertiary-fixed": "#351000", "on-primary-container": "#dad7ff", "surface-dim": "#d2d9f4", "on-surface": "#131b2e", error: "#ba1a1a", outline: "#777587", "on-error": "#ffffff"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}, spacing: {"container-max": "1280px", "stack-lg": "32px", "stack-sm": "8px", gutter: "24px", "stack-md": "16px", "margin-mobile": "20px", "margin-desktop": "64px"}, fontFamily: {"display-lg-mobile": ["Barlow Condensed"], "label-sm": ["Anybody"], "display-lg": ["Barlow Condensed"], "headline-md": ["Barlow Condensed"], "body-lg": ["Montserrat"], "body-md": ["Montserrat"], headline: ["Barlow Condensed"], display: ["Barlow Condensed"], body: ["Montserrat"], label: ["Anybody"]}, fontSize: {"display-lg-mobile": ["32px", {lineHeight: "40px", letterSpacing: "-0.02em", fontWeight: "700"}], "label-sm": ["14px", {lineHeight: "20px", letterSpacing: "0.05em", fontWeight: "600"}], "display-lg": ["48px", {lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700"}], "headline-md": ["24px", {lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "600"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}]}}}};</script>
+</head>
+<body class="bg-background text-on-background">
+<!-- TopNavBar -->
+<nav class="bg-white/70 dark:bg-surface-container/70 backdrop-blur-xl flex justify-between items-center w-full px-margin-desktop py-4 sticky top-0 z-50 border-b border-white/20 dark:border-outline-variant/10 shadow-md shadow-primary/10 duration-300 ease-in-out">
+<div class="font-display-lg text-display-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+            ExplainAI LoanWise
+        </div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="px-8 py-4 bg-primary text-white font-bold rounded-xl shadow-xl shadow-primary/20 hover:-translate-y-1 hover:shadow-primary/40 transition-all flex items-center gap-3" href="/apply.html">
+Get Started Now
+<span class="material-symbols-outlined">arrow_forward</span>
+</a>
+<a class="px-8 py-4 bg-white text-on-surface font-bold rounded-xl border border-outline-variant/30 hover:bg-surface-container-low transition-all flex items-center gap-3" href="/dashboard.html">
+View Demo Dashboard
+</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-body-md text-body-md" href="/results.html">Analysis</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed transition-colors font-body-md text-body-md" href="/chat.html">Chat</a>
+</div>
+<div id="authButtons" class="flex gap-4 items-center">
+<button class="text-on-surface-variant hover:text-primary font-label-sm text-label-sm transition-colors" onclick="window.location.href='/login.html'">Login</button>
+<button class="bg-primary hover:bg-secondary text-on-primary px-6 py-2 rounded-xl font-label-sm text-label-sm transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg shadow-primary/20" onclick="window.location.href='/login.html'">
+                Get Started
+            </button>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative min-h-[921px] flex items-center overflow-hidden pt-16">
+<!-- Animated Background Blobs -->
+<div class="hero-blob bg-primary w-[400px] h-[400px] -top-20 -left-20 animate-float" style="animation-delay: 0s;"></div>
+<div class="hero-blob bg-secondary w-[350px] h-[350px] top-1/2 -right-20 animate-float" style="animation-delay: 2s;"></div>
+<div class="hero-blob bg-tertiary w-[300px] h-[300px] -bottom-20 left-1/3 animate-float" style="animation-delay: 4s;"></div>
+<div class="max-w-container-max mx-auto px-margin-desktop grid md:grid-cols-2 gap-16 items-center">
+<div class="space-y-stack-lg z-10">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                    AI-Driven Financial Intelligence
+                </div>
+<h1 class="font-display-lg text-display-lg text-on-background leading-tight">
+                    Transparent AI <br>
+<span class="gradient-text">Loan Eligibility</span> Assistant
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+                    Understand your loan eligibility with AI-powered explanations and personalized financial recommendations. No more black-box credit scoring.
+                </p>
+<div class="flex flex-wrap gap-4 pt-4">
+<button class="bg-primary text-on-primary px-8 py-4 rounded-xl font-headline-md text-[18px] font-bold flex items-center gap-2 hover:bg-secondary transition-all shadow-xl shadow-primary/30 group" onclick="window.location.href='/login.html'">
+                        Check Eligibility
+                        <span class="material-symbols-outlined transition-transform group-hover:translate-x-1">arrow_forward</span>
+</button>
+<button class="glass-card glass-edge px-8 py-4 rounded-xl font-headline-md text-[18px] font-bold text-primary hover:bg-white/90 transition-all" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'})">
+                        Learn More
+                    </button>
+</div>
+<div class="flex items-center gap-4 pt-8 border-t border-outline-variant/20">
+<div class="flex -space-x-3">
+<div class="w-10 h-10 rounded-full border-2 border-white overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDDu3nFNROCU_6clvutx19gp7Z12qjIFnaaQZ9BtQZoUnhLZ5e3oaBUS3FgDFbx9MFEqPCA_c58wL6p7_saynAssIgytm0wHX4f37jfGggs7SrC37xOPVXf_X6kwNqmd_QQRogahf8SstGWQWSFj1KgB4ncu0_MgSORosOCamk09o8Y8BsPwtP9xVfQUstTmyn_zvfddlgYs05w__nm0e6pF9eP6sIzLvP6nUKHK2psKo8GopoYTRu41ZxlK6rDsqjm_AXf_BSDmlA">
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-white overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbLwgYNGeFxZ3K5nXSt0lLsqIsa0FBxlHNh8qJJarLVhtJYqHAvxLd7rJ9ykqxzs8zr_cjYz0cRm6Vu90d74qbxehIjLxHkmEytHXXsu4inhmX_ZUTzWqE_Mws_gccloFUu-iiI3I-kyvNip2VtH8W1CsjeYfOYp1SYnOpFcbvvjSSIAPg5kkzg1hcR-E-XU5JUk-H1LOZdS85NADG6e6W0ClvY6tUF7Sz8JEgSWGJnbIY6ksWru2m_woIMNcInwczJBQlJArVhZSl">
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-white overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfNhJPdr-PXj5vH_hYsCHFBU0ltUw23lwJJm46t1FnVqClKH46r_fQhXIEGtbMxtOtv-FNdmz1zMk4zhfiIpJU-aUhAQ4KxGfUlulQVask9nR8lgxb8QRB01uWDB05TeXwWtxDW1FDenemjq9kKQe7i0cMguN3Be2Nl1jubKHjaz0fiKpNXiG2T_ckszosw5mmxYoLtsT7BYMFQxN8voOMe3WT8tC1QOYtQCHVAB-pDyUfHKOZlaLuj8HB2-lvoJqfdwWYHY_tYGMi">
+</div>
+</div>
+<div class="text-on-surface-variant font-label-sm text-label-sm">
+<span class="font-bold text-on-background">12,000+</span> users trusted LoanWise this month
+                    </div>
+</div>
+</div>
+<div class="relative hidden md:block">
+<div class="glass-card glass-edge p-8 rounded-3xl relative z-10 animate-float shadow-2xl">
+<div class="flex justify-between items-center mb-8">
+<div>
+<p class="text-on-surface-variant font-label-sm text-label-sm">Current Eligibility Score</p>
+<h3 class="font-display text-[40px] font-bold text-primary">842</h3>
+</div>
+<div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[32px]">analytics</span>
+</div>
+</div>
+<div class="space-y-6">
+<div class="p-4 rounded-2xl bg-white/50 border border-white/40">
+<div class="flex justify-between text-label-sm mb-2">
+<span class="font-bold">AI Probability Insight</span>
+<span class="text-emerald-600 font-bold">92% High</span>
+</div>
+<div class="w-full h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[92%]"></div>
+</div>
+</div>
+<div class="bg-primary/5 p-4 rounded-2xl border border-primary/10">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">info</span>
+<div>
+<p class="font-bold text-primary text-body-md">AI Suggestion</p>
+<p class="text-on-surface-variant text-label-sm leading-relaxed">Increasing your savings by 5% could lower your interest rate by 0.45% in the next simulation.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute -top-10 -right-10 glass-card glass-edge p-4 rounded-2xl z-20 w-48 shadow-lg shadow-secondary/10 border-secondary/20">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+</div>
+<span class="font-bold text-label-sm">Approved Instantly</span>
+</div>
+</div>
+<div class="absolute -bottom-10 -left-10 glass-card glass-edge p-6 rounded-2xl z-20 w-64 shadow-lg shadow-primary/10">
+<p class="text-label-sm text-on-surface-variant mb-3">Rate Comparison</p>
+<div class="flex items-end gap-2 h-20">
+<div class="w-full bg-surface-container-high rounded-t-lg h-[40%]"></div>
+<div class="w-full bg-surface-container-high rounded-t-lg h-[60%]"></div>
+<div class="w-full bg-primary rounded-t-lg h-[90%]"></div>
+<div class="w-full bg-surface-container-high rounded-t-lg h-[50%]"></div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Features Bento Section -->
+<section id="features" class="py-24 bg-surface-container-lowest">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="text-center mb-16 space-y-4">
+<h2 class="font-display-lg text-display-lg text-on-background">Engineered for <span class="gradient-text">Clarity</span></h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                    We've replaced complex jargon with actionable AI insights that help you grow your financial health.
+                </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="group glass-card glass-edge p-8 rounded-3xl hover:-translate-y-2 transition-all duration-300">
+<div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-8 group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[32px]">neurology</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">AI Explanations</h3>
+<p class="text-on-surface-variant text-body-md leading-relaxed">
+                        Every decision is explained in plain English. Understand exactly why your application was accepted or what specific factors affected your rate.
+                    </p>
+</div>
+<div class="group glass-card glass-edge p-8 rounded-3xl md:scale-105 z-10 shadow-2xl bg-white transition-all duration-300">
+<div class="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary mb-8 group-hover:bg-secondary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[32px]">model_training</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">What-if Simulation</h3>
+<p class="text-on-surface-variant text-body-md leading-relaxed">
+                        Experiment with different financial scenarios. See how paying down debt or increasing income impacts your eligibility in real-time.
+                    </p>
+<div class="mt-8 pt-8 border-t border-outline-variant/20">
+<div class="flex items-center justify-between text-label-sm font-bold text-secondary cursor-pointer" onclick="window.location.href='/apply.html'">
+<span>Try Simulator</span>
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+</div>
+<div class="group glass-card glass-edge p-8 rounded-3xl hover:-translate-y-2 transition-all duration-300">
+<div class="w-14 h-14 rounded-2xl bg-tertiary/10 flex items-center justify-center text-tertiary mb-8 group-hover:bg-tertiary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[32px]">trending_up</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">Personalized Growth</h3>
+<p class="text-on-surface-variant text-body-md leading-relaxed">
+                        Receive a custom roadmap to improve your financial standing. We don't just judge; we provide the tools and advice to help you qualify.
+                    </p>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works -->
+<section class="py-24 relative overflow-hidden">
+<div class="max-w-container-max mx-auto px-margin-desktop">
+<div class="grid md:grid-cols-2 gap-24 items-center">
+<div class="order-2 md:order-1">
+<div class="relative">
+<div class="aspect-square rounded-3xl overflow-hidden glass-card glass-edge p-1">
+<img class="w-full h-full object-cover rounded-[22px]" src="how-it-works.png" alt="How LoanWise eligibility assessment works">
+</div>
+<div class="absolute -top-6 -right-6 glass-card glass-edge p-6 rounded-2xl shadow-xl animate-float">
+<p class="text-label-sm text-on-surface-variant">Processing Speed</p>
+<p class="text-headline-md font-bold text-primary">0.02s</p>
+</div>
+</div>
+</div>
+<div class="order-1 md:order-2 space-y-12">
+<div>
+<h2 class="font-display-lg text-display-lg mb-6">How It <span class="text-secondary">Works</span></h2>
+<p class="text-body-lg text-on-surface-variant">Three simple steps to financial clarity and better loan terms.</p>
+</div>
+<div class="space-y-8">
+<div class="flex gap-6 group">
+<div class="flex-shrink-0 w-12 h-12 rounded-full border-2 border-primary/20 flex items-center justify-center font-bold text-primary text-xl group-hover:bg-primary group-hover:text-white transition-all">1</div>
+<div>
+<h4 class="font-headline-md text-[20px] mb-2">Connect Safely</h4>
+<p class="text-on-surface-variant">Securely link your accounts using bank-grade 256-bit encryption. We only see what's needed for analysis.</p>
+</div>
+</div>
+<div class="flex gap-6 group">
+<div class="flex-shrink-0 w-12 h-12 rounded-full border-2 border-primary/20 flex items-center justify-center font-bold text-primary text-xl group-hover:bg-primary group-hover:text-white transition-all">2</div>
+<div>
+<h4 class="font-headline-md text-[20px] mb-2">AI Deep Dive</h4>
+<p class="text-on-surface-variant">Our models analyze thousands of data points to build a comprehensive picture of your financial strength.</p>
+</div>
+</div>
+<div class="flex gap-6 group">
+<div class="flex-shrink-0 w-12 h-12 rounded-full border-2 border-primary/20 flex items-center justify-center font-bold text-primary text-xl group-hover:bg-primary group-hover:text-white transition-all">3</div>
+<div>
+<h4 class="font-headline-md text-[20px] mb-2">Get Your Roadmap</h4>
+<p class="text-on-surface-variant">Receive your eligibility score plus clear, actionable steps to improve it and unlock better interest rates.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- AI Insight Panel -->
+<section class="py-24 bg-primary/5">
+<div class="max-w-4xl mx-auto px-margin-desktop">
+<div class="bg-white/40 backdrop-blur-2xl border border-primary/30 p-10 rounded-[32px] shadow-2xl relative overflow-hidden">
+<div class="absolute top-0 right-0 p-8 opacity-10">
+<span class="material-symbols-outlined text-[120px] text-primary">psychology</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 text-primary mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="font-bold tracking-widest text-label-sm uppercase">AI Insight Experience</span>
+</div>
+<h2 class="font-display-lg text-display-lg mb-8 leading-tight">Ready to see your <br><span class="text-primary">true potential?</span></h2>
+<div class="grid md:grid-cols-2 gap-8 mb-12">
+<div class="bg-white/60 p-6 rounded-2xl border border-white/40">
+<h5 class="font-bold mb-2">Traditional Banking</h5>
+<p class="text-on-surface-variant text-label-sm">Static credit scores based on limited historical data points.</p>
+</div>
+<div class="bg-primary p-6 rounded-2xl text-on-primary shadow-lg shadow-primary/30">
+<h5 class="font-bold mb-2">LoanWise AI</h5>
+<p class="text-primary-fixed text-label-sm">Dynamic behavioral analysis and future eligibility modeling.</p>
+</div>
+</div>
+<div class="flex justify-center">
+<button class="bg-primary text-on-primary px-12 py-5 rounded-full font-headline-md font-bold hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/40" onclick="window.location.href='/login.html'">
+                            Start Your Free Analysis
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-surface dark:bg-inverse-surface border-t border-outline-variant/20">
+<div class="max-w-container-max mx-auto px-margin-desktop py-stack-lg flex flex-col md:flex-row justify-between items-center">
+<div class="mb-8 md:mb-0">
+<div class="font-headline-md text-headline-md font-bold text-on-surface dark:text-inverse-on-surface mb-2">
+                    ExplainAI LoanWise
+                </div>
+<p class="text-on-surface-variant font-body-md text-body-md">Empowering financial futures through transparency.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8 mb-8 md:mb-0">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Privacy Policy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Contact Support</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md text-body-md" href="#">Financial Disclosure</a>
+</div>
+<div class="text-on-surface-variant font-body-md text-body-md text-center md:text-right">
+                © 2024 ExplainAI LoanWise. All rights reserved.
+            </div>
+</div>
+</footer>
+<script>
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                button.style.transform = 'translateY(-2px) scale(1.02)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'translateY(0) scale(1)';
+            });
+            button.addEventListener('mousedown', () => {
+                button.style.transform = 'scale(0.98)';
+            });
+        });
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('section');
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                if (sectionTop < window.innerHeight * 0.8) {
+                    section.classList.add('opacity-100');
+                    section.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        });
+
+        // Auth Logic
+        if (localStorage.getItem('isLoggedIn')) {
+            const authDiv = document.getElementById('authButtons');
+            if (authDiv) {
+                authDiv.innerHTML = `
+                    <button class="text-on-surface-variant hover:text-error font-label-sm text-label-sm transition-colors" onclick="localStorage.removeItem('isLoggedIn'); window.location.reload();">Logout</button>
+                    <button class="bg-primary hover:bg-secondary text-on-primary px-6 py-2 rounded-xl font-label-sm text-label-sm transition-all duration-300 shadow-lg shadow-primary/20" onclick="window.location.href='/apply.html'">Dashboard</button>
+                `;
+            }
+        }
+    </script>
+</body></html>

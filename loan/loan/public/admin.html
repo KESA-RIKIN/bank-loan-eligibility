@@ -1,0 +1,184 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Admin Dashboard | ExplainAI LoanWise</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;700&amp;family=Montserrat:wght@400;500;700&amp;family=Anybody:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: { primary: "#3525cd", secondary: "#0058be", background: "#faf8ff", surface: "#faf8ff", "on-surface": "#131b2e", "on-surface-variant": "#464555", outline: "#777587" }, fontFamily: { display: ["Barlow Condensed"], body: ["Montserrat"], label: ["Anybody"] }}}};</script>
+<script>
+    if (!localStorage.getItem('isLoggedIn')) { window.location.href = '/login.html'; }
+    document.addEventListener('DOMContentLoaded', () => {
+        const aside = document.querySelector('aside');
+        if (aside) {
+            const logoutBtn = document.createElement('button');
+            logoutBtn.className = 'mt-4 w-full py-3 bg-red-50 text-red-600 rounded-xl font-label-sm flex items-center justify-center gap-2 hover:bg-red-100 transition-all';
+            logoutBtn.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
+            logoutBtn.onclick = () => { localStorage.removeItem('isLoggedIn'); window.location.href = '/login.html'; };
+            aside.appendChild(logoutBtn);
+        } else {
+            const logoutBtn = document.createElement('button');
+            logoutBtn.className = 'fixed bottom-4 right-4 px-4 py-2 bg-red-600 text-white rounded-lg shadow-lg z-50 flex items-center gap-2';
+            logoutBtn.innerHTML = '<span class="material-symbols-outlined">logout</span> Logout';
+            logoutBtn.onclick = () => { localStorage.removeItem('isLoggedIn'); window.location.href = '/login.html'; };
+            document.body.appendChild(logoutBtn);
+        }
+    });
+</script>
+<style>
+    body { background-color: #faf8ff; color: #131b2e; overflow-x: hidden; }
+    .glass-card { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(53, 37, 205, 0.1); box-shadow: 0 30px 50px -12px rgba(53, 37, 205, 0.08); }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+</style>
+</head>
+<body class="font-body text-on-surface">
+<!-- Sidebar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-white/70 backdrop-blur-xl border-r border-outline/10 shadow-xl shadow-primary/5 flex flex-col p-4 z-50">
+<div class="flex items-center gap-3 mb-8 px-2">
+<div class="w-10 h-10 bg-secondary rounded-xl flex items-center justify-center text-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
+</div>
+<div>
+<h1 class="font-display text-2xl font-bold text-secondary leading-tight">Admin</h1>
+<p class="font-label text-xs text-on-surface-variant opacity-70">LoanWise Engine</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="flex items-center gap-3 p-3 rounded-xl bg-secondary/10 text-secondary transition-all" href="/admin.html">
+<span class="material-symbols-outlined">rule</span><span class="font-label">Rule Engine</span></a>
+<a class="flex items-center gap-3 p-3 rounded-xl text-on-surface-variant hover:bg-black/5 transition-all" href="/analytics.html">
+<span class="material-symbols-outlined">insights</span><span class="font-label">Analytics</span></a>
+<a class="flex items-center gap-3 p-3 rounded-xl text-on-surface-variant hover:bg-black/5 transition-all" href="/dashboard.html">
+<span class="material-symbols-outlined">home</span><span class="font-label">Back to App</span></a>
+</nav>
+</aside>
+
+<!-- Main -->
+<main class="ml-64 p-16 min-h-screen">
+<div class="fixed top-0 right-0 -z-10 w-[600px] h-[600px] bg-secondary/5 rounded-full blur-[100px] pointer-events-none translate-x-1/3 -translate-y-1/3"></div>
+
+<div class="max-w-4xl mx-auto">
+    <div class="flex items-center justify-between mb-8">
+        <div>
+            <h2 class="font-display text-4xl font-bold mb-2">Rule <span class="text-secondary">Engine Management</span></h2>
+            <p class="text-on-surface-variant font-body">Adjust weights and toggle evaluation rules in real-time. Sum of weights must equal 100.</p>
+        </div>
+        <button onclick="saveRules()" class="px-6 py-3 bg-secondary text-white rounded-xl font-bold hover:opacity-90 transition-all shadow-lg shadow-secondary/20 flex items-center gap-2">
+            <span class="material-symbols-outlined">save</span> Save Changes
+        </button>
+    </div>
+
+    <div id="statusMessage" class="hidden mb-6 p-4 rounded-xl font-label text-sm"></div>
+
+    <div class="glass-card p-8 rounded-3xl">
+        <div class="flex items-center justify-between mb-6 pb-6 border-b border-outline/20">
+            <h3 class="font-display text-2xl font-bold">Active Rules</h3>
+            <div class="font-label bg-surface-container-high px-4 py-2 rounded-full">
+                Total Weight: <span id="totalWeight" class="font-bold text-secondary">0</span> / 100
+            </div>
+        </div>
+
+        <div id="rulesContainer" class="space-y-4">
+            <div class="text-center py-8"><span class="material-symbols-outlined animate-spin">refresh</span></div>
+        </div>
+    </div>
+</div>
+</main>
+
+<script>
+    let rulesData = [];
+
+    async function loadRules() {
+        try {
+            const res = await fetch('/api/admin/rules');
+            const data = await res.json();
+            if (data.success) {
+                rulesData = data.data;
+                renderRules();
+            }
+        } catch(e) {
+            document.getElementById('rulesContainer').innerHTML = '<p class="text-red-500">Error loading rules.</p>';
+        }
+    }
+
+    function renderRules() {
+        const container = document.getElementById('rulesContainer');
+        container.innerHTML = '';
+        let total = 0;
+
+        rulesData.forEach((rule, idx) => {
+            total += rule.weight;
+            const html = `
+                <div class="flex items-center justify-between p-4 bg-white/50 rounded-xl border border-outline/10">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-1">
+                            <span class="font-bold text-lg">${rule.name}</span>
+                            ${rule.isActive ? '<span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 text-xs rounded-full font-bold uppercase">Active</span>' : '<span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs rounded-full font-bold uppercase">Inactive</span>'}
+                        </div>
+                        <p class="text-sm text-on-surface-variant font-body">Affects eligibility score calculation</p>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <div class="flex flex-col">
+                            <label class="text-xs text-on-surface-variant font-bold mb-1">Weight</label>
+                            <input type="number" class="w-20 bg-white border border-outline/30 rounded-lg p-2 font-body text-center" value="${rule.weight}" onchange="updateRule(${idx}, 'weight', this.value)">
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <label class="text-xs text-on-surface-variant font-bold mb-1">Status</label>
+                            <button onclick="updateRule(${idx}, 'isActive', ${!rule.isActive})" class="w-12 h-6 rounded-full transition-colors relative ${rule.isActive ? 'bg-emerald-500' : 'bg-outline/30'}">
+                                <div class="w-4 h-4 bg-white rounded-full absolute top-1 transition-all ${rule.isActive ? 'right-1' : 'left-1'}"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += html;
+        });
+
+        const twEl = document.getElementById('totalWeight');
+        twEl.textContent = total;
+        if (total !== 100) twEl.classList.replace('text-secondary', 'text-red-500');
+        else twEl.classList.replace('text-red-500', 'text-secondary');
+    }
+
+    function updateRule(index, field, value) {
+        if (field === 'weight') value = Number(value);
+        rulesData[index][field] = value;
+        renderRules();
+    }
+
+    async function saveRules() {
+        const total = rulesData.reduce((acc, r) => acc + r.weight, 0);
+        if (total !== 100) {
+            showStatus('Error: Total weight must equal exactly 100.', 'error');
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/admin/rules', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(rulesData)
+            });
+            const data = await res.json();
+            if (data.success) {
+                showStatus('Rules updated successfully.', 'success');
+                rulesData = data.data;
+                renderRules();
+            } else {
+                showStatus(data.error || 'Failed to update rules.', 'error');
+            }
+        } catch(e) {
+            showStatus('Network error.', 'error');
+        }
+    }
+
+    function showStatus(msg, type) {
+        const el = document.getElementById('statusMessage');
+        el.textContent = msg;
+        el.className = `mb-6 p-4 rounded-xl font-label text-sm block ${type === 'success' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}`;
+        setTimeout(() => el.classList.add('hidden'), 3000);
+    }
+
+    loadRules();
+</script>
+</body></html>
